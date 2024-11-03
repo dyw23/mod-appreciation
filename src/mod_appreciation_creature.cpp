@@ -4,6 +4,7 @@
 #include "CreatureScript.h"
 #include "Player.h"
 #include "ScriptedGossip.h"
+#include "Chat.h"
 
 class AppreciationCreature : public CreatureScript
 {
@@ -29,12 +30,12 @@ public:
 
         if (sConfigMgr->GetOption<bool>("Appreciation.LevelBoost.Enabled", true) && player->GetLevel() < TargetLevel)
         {
-            AddGossipItemFor(player, GOSSIP_ICON_CHAT, "I want a character boost", GOSSIP_SENDER_MAIN, GOSSIP_MENU_CHOOSE_SPECIALIZATION);
+            AddGossipItemFor(player, GOSSIP_ICON_CHAT, "|TInterface/ICONS/Achievement_Level_60:25|t我想要角色提升", GOSSIP_SENDER_MAIN, GOSSIP_MENU_CHOOSE_SPECIALIZATION);
         }
 
         if (sConfigMgr->GetOption<bool>("Appreciation.UnlockContinents.Enabled", true) && (sConfigMgr->GetOption<bool>("Appreciation.UnlockContinents.EasternKingdoms.Enabled", true) || sConfigMgr->GetOption<bool>("Appreciation.UnlockContinents.Kalimdor.Enabled", true) || sConfigMgr->GetOption<bool>("Appreciation.UnlockContinents.Outland.Enabled", true) || sConfigMgr->GetOption<bool>("Appreciation.UnlockContinents.Northrend.Enabled", false)))
         {
-            AddGossipItemFor(player, GOSSIP_ICON_CHAT, "I want to unlock flight paths", GOSSIP_SENDER_MAIN, GOSSIP_MENU_CHOOSE_CONTINENT);
+            AddGossipItemFor(player, GOSSIP_ICON_CHAT, "|TInterface/ICONS/INV_Misc_Pet_02:25|t我想要解锁飞行路线", GOSSIP_SENDER_MAIN, GOSSIP_MENU_CHOOSE_CONTINENT);
         }
 
         SendGossipMenuFor(player, GOSSIP_TEXT_DEFAULT, creature->GetGUID());
@@ -48,6 +49,29 @@ public:
             return false;
         }
 
+		if (action == GOSSIP_MENU_RETURN_TO_MAIN)
+        {
+            ClearGossipMenuFor(player);
+			uint32 TargetLevel = sConfigMgr->GetOption<uint32>("Appreciation.LevelBoost.TargetLevel", DEFAULT_LEVEL);
+
+            if (TargetLevel != 60 && TargetLevel != 70 && TargetLevel != 80)
+            {
+                TargetLevel = DEFAULT_LEVEL;
+            }
+
+            if (sConfigMgr->GetOption<bool>("Appreciation.LevelBoost.Enabled", true) && player->GetLevel() < TargetLevel)
+            {
+                AddGossipItemFor(player, GOSSIP_ICON_CHAT, "|TInterface/ICONS/Achievement_Level_60:25|t我想要角色提升", GOSSIP_SENDER_MAIN, GOSSIP_MENU_CHOOSE_SPECIALIZATION);
+            }
+
+            if (sConfigMgr->GetOption<bool>("Appreciation.UnlockContinents.Enabled", true) && (sConfigMgr->GetOption<bool>("Appreciation.UnlockContinents.EasternKingdoms.Enabled", true) || sConfigMgr->GetOption<bool>("Appreciation.UnlockContinents.Kalimdor.Enabled", true) || sConfigMgr->GetOption<bool>("Appreciation.UnlockContinents.Outland.Enabled", true) || sConfigMgr->GetOption<bool>("Appreciation.UnlockContinents.Northrend.Enabled", false)))
+            {
+                AddGossipItemFor(player, GOSSIP_ICON_CHAT, "|TInterface/ICONS/INV_Misc_Pet_02:25|t我想要解锁飞行路线", GOSSIP_SENDER_MAIN, GOSSIP_MENU_CHOOSE_CONTINENT);
+            }
+            SendGossipMenuFor(player, GOSSIP_TEXT_DEFAULT, creature->GetGUID());
+            return true;
+        }
+
         if (action == GOSSIP_MENU_CHOOSE_SPECIALIZATION)
         {
             ClearGossipMenuFor(player);
@@ -55,63 +79,63 @@ public:
             switch (player->getClass())
             {
             case CLASS_WARRIOR:
-                AddGossipItemFor(player, GOSSIP_ICON_CHAT, "I want to be an Arms Warrior", GOSSIP_SENDER_MAIN, GOSSIP_MENU_SPECIALIZATION_1);
-                AddGossipItemFor(player, GOSSIP_ICON_CHAT, "I want to be a Fury Warrior", GOSSIP_SENDER_MAIN, GOSSIP_MENU_SPECIALIZATION_2);
-                AddGossipItemFor(player, GOSSIP_ICON_CHAT, "I want to be a Protection Warrior", GOSSIP_SENDER_MAIN, GOSSIP_MENU_SPECIALIZATION_3);
+                AddGossipItemFor(player, GOSSIP_ICON_CHAT, "|TInterface/ICONS/inv_sword_27:25|t|cff8B4513我想成为一名武器战", GOSSIP_SENDER_MAIN, GOSSIP_MENU_SPECIALIZATION_1);
+                AddGossipItemFor(player, GOSSIP_ICON_CHAT, "|TInterface/ICONS/inv_sword_27:25|t|cff8B4513我想成为一名狂暴战", GOSSIP_SENDER_MAIN, GOSSIP_MENU_SPECIALIZATION_2);
+                AddGossipItemFor(player, GOSSIP_ICON_CHAT, "|TInterface/ICONS/inv_sword_27:25|t|cff8B4513我想成为一名防战", GOSSIP_SENDER_MAIN, GOSSIP_MENU_SPECIALIZATION_3);
                 break;
             case CLASS_PALADIN:
-                AddGossipItemFor(player, GOSSIP_ICON_CHAT, "I want to be a Holy Paladin", GOSSIP_SENDER_MAIN, GOSSIP_MENU_SPECIALIZATION_1);
-                AddGossipItemFor(player, GOSSIP_ICON_CHAT, "I want to be a Protection Paladin", GOSSIP_SENDER_MAIN, GOSSIP_MENU_SPECIALIZATION_2);
-                AddGossipItemFor(player, GOSSIP_ICON_CHAT, "I want to be a Retribution Paladin", GOSSIP_SENDER_MAIN, GOSSIP_MENU_SPECIALIZATION_3);
+                AddGossipItemFor(player, GOSSIP_ICON_CHAT, "|TInterface/ICONS/ability_thunderbolt:25|t|cffC71585我想成为一名奶骑", GOSSIP_SENDER_MAIN, GOSSIP_MENU_SPECIALIZATION_1);
+                AddGossipItemFor(player, GOSSIP_ICON_CHAT, "|TInterface/ICONS/ability_thunderbolt:25|t|cffC71585我想成为一名防骑", GOSSIP_SENDER_MAIN, GOSSIP_MENU_SPECIALIZATION_2);
+                AddGossipItemFor(player, GOSSIP_ICON_CHAT, "|TInterface/ICONS/ability_thunderbolt:25|t|cffC71585我想成为一名惩戒骑", GOSSIP_SENDER_MAIN, GOSSIP_MENU_SPECIALIZATION_3);
                 break;
             case CLASS_HUNTER:
-                AddGossipItemFor(player, GOSSIP_ICON_CHAT, "I want to be a Beast Mastery Hunter", GOSSIP_SENDER_MAIN, GOSSIP_MENU_SPECIALIZATION_1);
-                AddGossipItemFor(player, GOSSIP_ICON_CHAT, "I want to be a Marksmanship Hunter", GOSSIP_SENDER_MAIN, GOSSIP_MENU_SPECIALIZATION_2);
-                AddGossipItemFor(player, GOSSIP_ICON_CHAT, "I want to be a Survival Hunter", GOSSIP_SENDER_MAIN, GOSSIP_MENU_SPECIALIZATION_3);
+                AddGossipItemFor(player, GOSSIP_ICON_CHAT, "|TInterface/ICONS/inv_weapon_bow_07:25|t|cFF548B54我想成为一名兽王猎", GOSSIP_SENDER_MAIN, GOSSIP_MENU_SPECIALIZATION_1);
+                AddGossipItemFor(player, GOSSIP_ICON_CHAT, "|TInterface/ICONS/inv_weapon_bow_07:25|t|cFF548B54我想成为一名射击猎", GOSSIP_SENDER_MAIN, GOSSIP_MENU_SPECIALIZATION_2);
+                AddGossipItemFor(player, GOSSIP_ICON_CHAT, "|TInterface/ICONS/inv_weapon_bow_07:25|t|cFF548B54我想成为一名生存猎", GOSSIP_SENDER_MAIN, GOSSIP_MENU_SPECIALIZATION_3);
                 break;
             case CLASS_ROGUE:
-                AddGossipItemFor(player, GOSSIP_ICON_CHAT, "I want to be an Assassination Rogue", GOSSIP_SENDER_MAIN, GOSSIP_MENU_SPECIALIZATION_1);
-                AddGossipItemFor(player, GOSSIP_ICON_CHAT, "I want to be a Combat Rogue", GOSSIP_SENDER_MAIN, GOSSIP_MENU_SPECIALIZATION_2);
-                AddGossipItemFor(player, GOSSIP_ICON_CHAT, "I want to be a Subtlety Rogue", GOSSIP_SENDER_MAIN, GOSSIP_MENU_SPECIALIZATION_3);
+                AddGossipItemFor(player, GOSSIP_ICON_CHAT, "|TInterface/ICONS/inv_throwingknife_04:25|t|cffFFFF00我想成为一名刺杀贼", GOSSIP_SENDER_MAIN, GOSSIP_MENU_SPECIALIZATION_1);
+                AddGossipItemFor(player, GOSSIP_ICON_CHAT, "|TInterface/ICONS/inv_throwingknife_04:25|t|cffFFFF00我想成为一名战斗贼", GOSSIP_SENDER_MAIN, GOSSIP_MENU_SPECIALIZATION_2);
+                AddGossipItemFor(player, GOSSIP_ICON_CHAT, "|TInterface/ICONS/inv_throwingknife_04:25|t|cffFFFF00我想成为一名敏锐贼", GOSSIP_SENDER_MAIN, GOSSIP_MENU_SPECIALIZATION_3);
                 break;
             case CLASS_PRIEST:
-                AddGossipItemFor(player, GOSSIP_ICON_CHAT, "I want to be a Discipline Priest", GOSSIP_SENDER_MAIN, GOSSIP_MENU_SPECIALIZATION_1);
-                AddGossipItemFor(player, GOSSIP_ICON_CHAT, "I want to be a Holy Priest", GOSSIP_SENDER_MAIN, GOSSIP_MENU_SPECIALIZATION_2);
-                AddGossipItemFor(player, GOSSIP_ICON_CHAT, "I want to be a Shadow Priest", GOSSIP_SENDER_MAIN, GOSSIP_MENU_SPECIALIZATION_3);
+                AddGossipItemFor(player, GOSSIP_ICON_CHAT, "|TInterface/ICONS/inv_staff_30:25|t|cffFFFFFF我想成为一名戒律牧", GOSSIP_SENDER_MAIN, GOSSIP_MENU_SPECIALIZATION_1);
+                AddGossipItemFor(player, GOSSIP_ICON_CHAT, "|TInterface/ICONS/inv_staff_30:25|t|cffFFFFFF我想成为一名神牧", GOSSIP_SENDER_MAIN, GOSSIP_MENU_SPECIALIZATION_2);
+                AddGossipItemFor(player, GOSSIP_ICON_CHAT, "|TInterface/ICONS/inv_staff_30:25|t|cffFFFFFF我想成为一名暗牧", GOSSIP_SENDER_MAIN, GOSSIP_MENU_SPECIALIZATION_3);
                 break;
             case CLASS_DEATH_KNIGHT:
-                AddGossipItemFor(player, GOSSIP_ICON_CHAT, "I want to be a Blood Death Knight", GOSSIP_SENDER_MAIN, GOSSIP_MENU_SPECIALIZATION_1);
-                AddGossipItemFor(player, GOSSIP_ICON_CHAT, "I want to be a Frost Death Knight", GOSSIP_SENDER_MAIN, GOSSIP_MENU_SPECIALIZATION_2);
-                AddGossipItemFor(player, GOSSIP_ICON_CHAT, "I want to be a Unholy Death Knight", GOSSIP_SENDER_MAIN, GOSSIP_MENU_SPECIALIZATION_3);
+                AddGossipItemFor(player, GOSSIP_ICON_CHAT, "|TInterface/ICONS/spell_deathknight_classicon:25|t|cffC41E3B我想成为一名血DK", GOSSIP_SENDER_MAIN, GOSSIP_MENU_SPECIALIZATION_1);
+                AddGossipItemFor(player, GOSSIP_ICON_CHAT, "|TInterface/ICONS/spell_deathknight_classicon:25|t|cffC41E3B我想成为一名冰DK", GOSSIP_SENDER_MAIN, GOSSIP_MENU_SPECIALIZATION_2);
+                AddGossipItemFor(player, GOSSIP_ICON_CHAT, "|TInterface/ICONS/spell_deathknight_classicon:25|t|cffC41E3B我想成为一名邪DK", GOSSIP_SENDER_MAIN, GOSSIP_MENU_SPECIALIZATION_3);
                 break;
             case CLASS_SHAMAN:
-                AddGossipItemFor(player, GOSSIP_ICON_CHAT, "I want to be an Elemental Shaman", GOSSIP_SENDER_MAIN, GOSSIP_MENU_SPECIALIZATION_1);
-                AddGossipItemFor(player, GOSSIP_ICON_CHAT, "I want to be an Enhancement Shaman", GOSSIP_SENDER_MAIN, GOSSIP_MENU_SPECIALIZATION_2);
-                AddGossipItemFor(player, GOSSIP_ICON_CHAT, "I want to be a Restoration Shaman", GOSSIP_SENDER_MAIN, GOSSIP_MENU_SPECIALIZATION_3);
+                AddGossipItemFor(player, GOSSIP_ICON_CHAT, "|TInterface/ICONS/spell_nature_bloodlust:25|t|cff2359FF我想成为一名元素萨", GOSSIP_SENDER_MAIN, GOSSIP_MENU_SPECIALIZATION_1);
+                AddGossipItemFor(player, GOSSIP_ICON_CHAT, "|TInterface/ICONS/spell_nature_bloodlust:25|t|cff2359FF我想成为一名增强萨", GOSSIP_SENDER_MAIN, GOSSIP_MENU_SPECIALIZATION_2);
+                AddGossipItemFor(player, GOSSIP_ICON_CHAT, "|TInterface/ICONS/spell_nature_bloodlust:25|t|cff2359FF我想成为一名奶萨", GOSSIP_SENDER_MAIN, GOSSIP_MENU_SPECIALIZATION_3);
                 break;
             case CLASS_MAGE:
-                AddGossipItemFor(player, GOSSIP_ICON_CHAT, "I want to be an Arcane Mage", GOSSIP_SENDER_MAIN, GOSSIP_MENU_SPECIALIZATION_1);
-                AddGossipItemFor(player, GOSSIP_ICON_CHAT, "I want to be a Fire Mage", GOSSIP_SENDER_MAIN, GOSSIP_MENU_SPECIALIZATION_2);
-                AddGossipItemFor(player, GOSSIP_ICON_CHAT, "I want to be a Frost Mage", GOSSIP_SENDER_MAIN, GOSSIP_MENU_SPECIALIZATION_3);
+                AddGossipItemFor(player, GOSSIP_ICON_CHAT, "|TInterface/ICONS/inv_staff_13:25|t|cff68CCEF我想成为一名奥法", GOSSIP_SENDER_MAIN, GOSSIP_MENU_SPECIALIZATION_1);
+                AddGossipItemFor(player, GOSSIP_ICON_CHAT, "|TInterface/ICONS/inv_staff_13:25|t|cff68CCEF我想成为一名火法", GOSSIP_SENDER_MAIN, GOSSIP_MENU_SPECIALIZATION_2);
+                AddGossipItemFor(player, GOSSIP_ICON_CHAT, "|TInterface/ICONS/inv_staff_13:25|t|cff68CCEF我想成为一名冰法", GOSSIP_SENDER_MAIN, GOSSIP_MENU_SPECIALIZATION_3);
                 break;
             case CLASS_WARLOCK:
-                AddGossipItemFor(player, GOSSIP_ICON_CHAT, "I want to be an Affliction Warlock", GOSSIP_SENDER_MAIN, GOSSIP_MENU_SPECIALIZATION_1);
-                AddGossipItemFor(player, GOSSIP_ICON_CHAT, "I want to be a Demonology Warlock", GOSSIP_SENDER_MAIN, GOSSIP_MENU_SPECIALIZATION_2);
-                AddGossipItemFor(player, GOSSIP_ICON_CHAT, "I want to be a Destruction Warlock", GOSSIP_SENDER_MAIN, GOSSIP_MENU_SPECIALIZATION_3);
+                AddGossipItemFor(player, GOSSIP_ICON_CHAT, "|TInterface/ICONS/spell_nature_drowsy:25|t|cff9382C9我想成为一名痛苦术士", GOSSIP_SENDER_MAIN, GOSSIP_MENU_SPECIALIZATION_1);
+                AddGossipItemFor(player, GOSSIP_ICON_CHAT, "|TInterface/ICONS/spell_nature_drowsy:25|t|cff9382C9我想成为一名恶魔学识术士", GOSSIP_SENDER_MAIN, GOSSIP_MENU_SPECIALIZATION_2);
+                AddGossipItemFor(player, GOSSIP_ICON_CHAT, "|TInterface/ICONS/spell_nature_drowsy:25|t|cff9382C9我想成为一名毁灭术士", GOSSIP_SENDER_MAIN, GOSSIP_MENU_SPECIALIZATION_3);
                 break;
             case CLASS_DRUID:
-                AddGossipItemFor(player, GOSSIP_ICON_CHAT, "I want to be a Balance Druid", GOSSIP_SENDER_MAIN, GOSSIP_MENU_SPECIALIZATION_1);
-                AddGossipItemFor(player, GOSSIP_ICON_CHAT, "I want to be a Feral Druid", GOSSIP_SENDER_MAIN, GOSSIP_MENU_SPECIALIZATION_2);
-                AddGossipItemFor(player, GOSSIP_ICON_CHAT, "I want to be a Restoration Druid", GOSSIP_SENDER_MAIN, GOSSIP_MENU_SPECIALIZATION_3);
+                AddGossipItemFor(player, GOSSIP_ICON_CHAT, "|TInterface/ICONS/ability_druid_maul:25|t|cFFFF6600我想成为一名鸟德", GOSSIP_SENDER_MAIN, GOSSIP_MENU_SPECIALIZATION_1);
+                AddGossipItemFor(player, GOSSIP_ICON_CHAT, "|TInterface/ICONS/ability_druid_maul:25|t|cFFFF6600我想成为一名野德", GOSSIP_SENDER_MAIN, GOSSIP_MENU_SPECIALIZATION_2);
+                AddGossipItemFor(player, GOSSIP_ICON_CHAT, "|TInterface/ICONS/ability_druid_maul:25|t|cFFFF6600我想成为一名奶德", GOSSIP_SENDER_MAIN, GOSSIP_MENU_SPECIALIZATION_3);
                 break;
             }
-
-            SendGossipMenuFor(player, GOSSIP_TEXT_CHOOSE_SPECIALIZATION, creature->GetGUID());
+			AddGossipItemFor(player, GOSSIP_ICON_CHAT, "|TInterface/ICONS/Spell_Shadow_SacrificialShield:25|t返回", GOSSIP_SENDER_MAIN, GOSSIP_MENU_RETURN_TO_MAIN);
+			SendGossipMenuFor(player, GOSSIP_TEXT_CHOOSE_SPECIALIZATION, creature->GetGUID());
         }
         else if (action == GOSSIP_MENU_SPECIALIZATION_1 || action == GOSSIP_MENU_SPECIALIZATION_2 || action == GOSSIP_MENU_SPECIALIZATION_3)
         {
             ClearGossipMenuFor(player);
-            AddGossipItemFor(player, GOSSIP_ICON_CHAT, "I'm sure!", GOSSIP_SENDER_MAIN, action + 100);
+            AddGossipItemFor(player, GOSSIP_ICON_CHAT, "我确定!", GOSSIP_SENDER_MAIN, action + 100);
             SendGossipMenuFor(player, GOSSIP_TEXT_CONFIRM_SPECIALIZATION, creature->GetGUID());
         }
         else if (action == GOSSIP_MENU_SPECIALIZATION_1 + 100 || action == GOSSIP_MENU_SPECIALIZATION_2 + 100 || action == GOSSIP_MENU_SPECIALIZATION_3 + 100)
@@ -125,24 +149,25 @@ public:
 
             if (sConfigMgr->GetOption<bool>("Appreciation.UnlockContinents.EasternKingdoms.Enabled", true))
             {
-                AddGossipItemFor(player, GOSSIP_ICON_CHAT, "Eastern Kingdoms", GOSSIP_SENDER_MAIN, GOSSIP_MENU_CHOOSE_EASTERN_KINGDOMS);
+                AddGossipItemFor(player, GOSSIP_ICON_CHAT, "|TInterface/ICONS/Achievement_Zone_EasternKingdoms_01:25|t东部王国", GOSSIP_SENDER_MAIN, GOSSIP_MENU_CHOOSE_EASTERN_KINGDOMS);
             }
 
             if (sConfigMgr->GetOption<bool>("Appreciation.UnlockContinents.Kalimdor.Enabled", true))
             {
-                AddGossipItemFor(player, GOSSIP_ICON_CHAT, "Kalimdor", GOSSIP_SENDER_MAIN, GOSSIP_MENU_CHOOSE_KALIMDOR);
+                AddGossipItemFor(player, GOSSIP_ICON_CHAT, "|TInterface/ICONS/Achievement_Zone_Kalimdor_01:25|t卡利姆多", GOSSIP_SENDER_MAIN, GOSSIP_MENU_CHOOSE_KALIMDOR);
             }
 
             if (sConfigMgr->GetOption<bool>("Appreciation.UnlockContinents.Outland.Enabled", true))
             {
-                AddGossipItemFor(player, GOSSIP_ICON_CHAT, "Outland", GOSSIP_SENDER_MAIN, GOSSIP_MENU_CHOOSE_OUTLAND);
+                AddGossipItemFor(player, GOSSIP_ICON_CHAT, "|TInterface/ICONS/Achievement_Zone_Outland_01:25|t外域", GOSSIP_SENDER_MAIN, GOSSIP_MENU_CHOOSE_OUTLAND);
             }
 
             if (sConfigMgr->GetOption<bool>("Appreciation.UnlockContinents.Northrend.Enabled", false))
             {
-                AddGossipItemFor(player, GOSSIP_ICON_CHAT, "Northrend", GOSSIP_SENDER_MAIN, GOSSIP_MENU_CHOOSE_NORTHREND);
+                AddGossipItemFor(player, GOSSIP_ICON_CHAT, "|TInterface/ICONS/Achievement_Zone_Northrend_01:25|t诺森德", GOSSIP_SENDER_MAIN, GOSSIP_MENU_CHOOSE_NORTHREND);
             }
 
+			AddGossipItemFor(player, GOSSIP_ICON_CHAT, "|TInterface/ICONS/Spell_Shadow_SacrificialShield:25|t返回", GOSSIP_SENDER_MAIN, GOSSIP_MENU_RETURN_TO_MAIN);
             SendGossipMenuFor(player, GOSSIP_TEXT_CHOOSE_CONTINENT, creature->GetGUID());
         }
         else if (action == GOSSIP_MENU_CHOOSE_EASTERN_KINGDOMS || action == GOSSIP_MENU_CHOOSE_KALIMDOR || action == GOSSIP_MENU_CHOOSE_OUTLAND || action == GOSSIP_MENU_CHOOSE_NORTHREND)
@@ -366,10 +391,80 @@ private:
         }
 
         player->ModifyMoney(IncludedCopper);
+		ChatHandler(player->GetSession()).SendNotification("已奖励您250G！");
+		ChatHandler(player->GetSession()).SendSysMessage("已奖励您250G！");
     }
 
-    void UnlockContinent(Player* player, uint8 continent)
+	void UnlockContinent(Player* player, uint8 continent)
     {
+        // 检查是否已解锁并解锁飞行点
+        if (!IsUnlocked(player, continent))
+        {
+            UnlockTaxiNodes(player, continent);
+            UpdateUnlockStatus(player, continent);
+            SendUnlockNotification(player, continent);
+        }
+        else
+        {
+            SendAlreadyUnlockedNotification(player, continent);
+        }
+    }
+    bool IsUnlocked(Player* player, uint8 continent)
+    {
+		// 检查是否已解锁
+        std::string field = GetContinentUnlockField(continent);
+        QueryResult result = CharacterDatabase.Query("SELECT `" + field + "` FROM player_taxinodes_unlocks WHERE guid = {}", player->GetSession()->GetGuidLow());
+        return result && result->Fetch()[0].Get<uint8>() == 1;
+    }
+	void UpdateUnlockStatus(Player* player, uint8 continent)
+    {
+		// 更新数据库
+        std::string field = GetContinentUnlockField(continent);
+        CharacterDatabase.Execute("INSERT INTO player_taxinodes_unlocks (guid, `" + field + "`) VALUES ({}, 1) ON DUPLICATE KEY UPDATE `" + field + "` = VALUES(`" + field + "`)", player->GetSession()->GetGuidLow());
+    }
+
+    void SendUnlockNotification(Player* player, uint8 continent)
+    {
+        // 发送解锁通知的代码...
+	    std::string continentName = GetContinentName(continent);
+        ChatHandler(player->GetSession()).SendNotification("您已激活了 {} 所有的飞行点！", continentName);
+        ChatHandler(player->GetSession()).PSendSysMessage("您已激活了 {} 所有的飞行点！", continentName.c_str());
+    }
+
+    void SendAlreadyUnlockedNotification(Player* player, uint8 continent)
+    {
+        // 发送已解锁通知的代码...
+	    std::string continentName = GetContinentName(continent);
+        ChatHandler(player->GetSession()).SendNotification("您已经激活了 {} 所有的飞行点，无需重复激活。", continentName);
+		ChatHandler(player->GetSession()).PSendSysMessage("您已经激活了 {} 所有的飞行点，无需重复激活。", continentName.c_str());
+    }
+
+    std::string GetContinentUnlockField(uint8 continent)
+    {
+        switch (continent)
+        {
+            case CONTINENT_EASTERN_KINGDOMS: return "eastern_kingdoms_taxi_unlocked";
+            case CONTINENT_KALIMDOR: return "kalimdor_taxi_unlocked";
+            case CONTINENT_OUTLAND: return "outland_taxi_unlocked";
+            case CONTINENT_NORTHREND: return "northrend_taxi_unlocked";
+            default: return "";
+        }
+    }
+    std::string GetContinentName(uint8 continent)
+    {
+        switch (continent)
+        {
+            case CONTINENT_EASTERN_KINGDOMS: return "东部王国";
+            case CONTINENT_KALIMDOR: return "卡利姆多";
+            case CONTINENT_OUTLAND: return "外域";
+            case CONTINENT_NORTHREND: return "诺森德";
+            default: return "";
+        }
+    }
+
+    void UnlockTaxiNodes(Player* player, uint8 continent)
+    {
+		// 解锁飞行点
         switch (continent)
         {
         case CONTINENT_EASTERN_KINGDOMS:
@@ -562,7 +657,6 @@ private:
             }
             break;
         }
-
         RemoveCertificate(player);
     }
 
